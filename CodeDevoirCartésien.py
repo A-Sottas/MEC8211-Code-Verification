@@ -93,9 +93,13 @@ def Maillage(Ntot):
     sol_analytique=C(Vr)
     sol_numérique=solution[-1]
     sol_numérique2=solution2[-1]
+    errL1,L1=EL1(sol_analytique,sol_numérique)
+    errL11,L11=EL1(sol_analytique,sol_numérique2)
     errL2,L2=EL2(sol_analytique,sol_numérique)
     errL22,L22=EL2(sol_analytique,sol_numérique2)
-    return Ntot, L2, L22, Vr, sol_analytique, sol_numérique,sol_numérique2
+    errL3,L3=EL3(sol_analytique,sol_numérique)
+    errL33,L33=EL3(sol_analytique,sol_numérique2)
+    return Ntot,abs(L1), abs(L11), abs(L2), abs(L22), abs(L3), abs(L33), Vr, sol_analytique, sol_numérique,sol_numérique2
 
 ## Affichage des résultats
 res1,err1=plt.subplot(2,2,1),plt.subplot(2,2,2)
