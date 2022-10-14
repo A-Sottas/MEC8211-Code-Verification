@@ -98,27 +98,56 @@ def Maillage(Ntot):
     return Ntot, L2, L22, Vr, sol_analytique, sol_numérique,sol_numérique2
 
 ## Affichage des résultats
-res,err=plt.subplot(1,2,1),plt.subplot(1,2,2)
+res1,err1=plt.subplot(2,2,1),plt.subplot(2,2,2)
+res2,err2=plt.subplot(2,2,3),plt.subplot(2,2,4)
 plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3)
+
+ErreurL1=[]
+ErreurL2=[]
+ErreurL3=[]
+ErreurL11=[]
+ErreurL22=[]
+ErreurL33=[]
 
 #Affichage des résultats
 for N in Vn:
-    Ntot, L2, L22,Vr,sol_analytique, sol_numérique,sol_numérique2 = Maillage(N)
-    #Affichage des erreurs L2 en échelle Log-Log
-    err.loglog(Ntot,abs(L2),'b1-',label="Sol1")
-    err.loglog(Ntot,abs(L22),'r2-',label="Sol2")
+    Ntot, L1, L11, L2, L22, L3, L33,Vr,sol_analytique, sol_numérique,sol_numérique2 = Maillage(N)
+    ErreurL1.append(L1)
+    ErreurL11.append(L11)
+    ErreurL2.append(L2)
+    ErreurL22.append(L22)
+    ErreurL3.append(L3)
+    ErreurL33.append(L33)
     #Affiche des solutions
-    res.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
-    res.plot(Vr,sol_numérique2,".--",label="Ordre 2 : Ntot = {}".format(Ntot))
+    res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
+    res2.plot(Vr,sol_numérique2,".--",label="Ordre 2 : Ntot = {}".format(Ntot))
+
+#Affichage des erreurs en échelle Log-Log
+err1.loglog(R/(Vn-1),ErreurL1,'b1-',label="L1")
+err2.loglog(R/(Vn-1),ErreurL11,'b2-',label="L2")
+err1.loglog(R/(Vn-1),ErreurL2,'r1-',label="L2")
+err2.loglog(R/(Vn-1),ErreurL22,'r2-',label="L2 Gear")
+err1.loglog(R/(Vn-1),ErreurL3,'k1-',label="Linf")
+err2.loglog(R/(Vn-1),ErreurL33,'k2-',label="Linf Gear")
     
 #Affichage Solution Analytique
-res.plot(Vr,sol_analytique,"-",label="Solution analytique")
+res1.plot(Vr,sol_analytique,"-",label="Solution analytique")
+res2.plot(Vr,sol_analytique,"-",label="Solution analytique")
 
-err.loglog([10,100],[0.001,0.00001],'g*-') #Référence ordre 2
+err1.loglog([0.1,0.01],[0.01,0.0001],'g*-') #Référence ordre 2
+err2.loglog([0.1,0.01],[0.01,0.0001],'g*-') #Référence ordre 2
 
-err.legend()
-err.grid()
-res.legend()
-res.grid()
+err1.legend()
+err1.grid()
+res1.legend()
+res1.grid()
+err2.legend()
+err2.grid()
+res2.legend()
+res2.grid()
+
+err1.invert_xaxis()
+err2.invert_xaxis()
 
 plt.show()
+##
