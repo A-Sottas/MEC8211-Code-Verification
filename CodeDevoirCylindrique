@@ -1,5 +1,5 @@
-#Auteur : Mathieu Goureau
-# mathieu.goureau@polymtl.ca/mathieu.goureau@gadz.org
+#Auteur : Mathieu Goureau/ Arona Sottas
+#mathieu.goureau@polymtl.ca
 
 import matplotlib.pyplot as plt
 import numpy as np
