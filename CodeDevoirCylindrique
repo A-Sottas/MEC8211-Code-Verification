@@ -125,3 +125,31 @@ def Maillage(Ntot):
     errL2,L2=EL2(sol_analytique,sol_numérique)
     errL22,L22=EL2(sol_analytique,sol_numérique2)
     return Ntot, L2, L22, Vr, sol_analytique, sol_numérique,sol_numérique2
+
+## Affichage des résultats
+res,err=plt.subplot(1,2,1),plt.subplot(1,2,2)
+plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3)
+
+#Affichage des résultats
+for N in Vn:
+    Ntot, L2, L22,Vr,sol_analytique, sol_numérique,sol_numérique2 = Maillage(N)
+    #Affichage des erreurs L2 en échelle Log-Log
+    err.loglog(Ntot,abs(L2),'b1-',label="Sol1")
+    err.loglog(Ntot,abs(L22),'r2-',label="Sol2")
+    #Affiche des solutions
+    res.plot(Vr,sol_numérique,".-",label="Solution numérique : Schéma ordre 1")
+    res.plot(Vr,sol_numérique2,".--",label="Solution numérique : Schéma ordre 2")
+    
+#Affichage Solution Analytique
+res.plot(Vr,sol_analytique,"x-",label="Solution analytique")
+
+err.loglog([10,100],[0.001,0.00001],'g*-') #Référence ordre 2
+
+err.legend()
+err.grid()
+res.legend()
+res.grid()
+
+plt.show()
+
+##
