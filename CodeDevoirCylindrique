@@ -137,8 +137,8 @@ for N in Vn:
     err.loglog(Ntot,abs(L2),'b1-',label="Sol1")
     err.loglog(Ntot,abs(L22),'r2-',label="Sol2")
     #Affiche des solutions
-    res.plot(Vr,sol_numérique,".-",label="Solution numérique : Schéma ordre 1")
-    res.plot(Vr,sol_numérique2,".--",label="Solution numérique : Schéma ordre 2")
+    res.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
+    res.plot(Vr,sol_numérique2,".--",label="Ordre 2 : Ntot = {}".format(Ntot))
     
 #Affichage Solution Analytique
 res.plot(Vr,sol_analytique,"-",label="Solution analytique")
