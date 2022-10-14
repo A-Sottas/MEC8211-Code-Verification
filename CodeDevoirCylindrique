@@ -1,2 +1,19 @@
 #Auteur : Mathieu Goureau
 # mathieu.goureau@polymtl.ca/mathieu.goureau@gadz.org
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.integrate import odeint
+
+##Définition des constantes
+
+S =  1e-8 #Terme source constant
+D_eff = 1e-10 #Coefficient de diffusion constant
+Ce = 10 #Concentration extérieure
+D = 1 #Diamètre du pilier
+R = D/2 #Rayon du pilier
+
+Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
+
+dt = 365*3600*24 #Base de temps : 1 an
+Vt = np.arange(0,1e10,dt) #Vecteur des temps t
