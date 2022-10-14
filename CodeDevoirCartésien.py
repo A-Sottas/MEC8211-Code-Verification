@@ -86,10 +86,10 @@ def EL3(analytique,numérique): #Calcul erreur L3
 
 def Maillage(Ntot):
     Vr = np.linspace(0,R,Ntot)
-    M,M2=Matrice1(Vr,Ntot),Matrice2(Vr,Ntot)
+    M,M2=Matrice(Vr,Ntot),MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot)
-    solution = Euler_implicite_solve(Vr,Vt,M,Y0,Matrice1,Ntot)
-    solution2 = Euler_implicite_solve(Vr,Vt,M2,Y0,Matrice2,Ntot)
+    solution = Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot)
+    solution2 = Euler_implicite_solve(Vr,Vt,M2,Y0,MatriceGear,Ntot)
     sol_analytique=C(Vr)
     sol_numérique=solution[-1]
     sol_numérique2=solution2[-1]
