@@ -10,7 +10,14 @@ Les principaux objectifs de ce projet sont:
 ### Contexte du problème
 La responsable de projet de la compagnie DUPONT & Associés Inc., Mme d'AVIGNON nous charge d'étudier l'évolution de la concentration de sel dans une structure poreuse telle qu'un pilier de béton d'un pont.
 
-### Résultats du code Python (_in progress_)
+### Fichiers
 
+Deux fichiers sont disponibles :
+* CodeDevoirCartésien.py traite le problème en coordonnées cylindriques
+* CodeDevoirCylindrique.py traite le problème en coordonnées cartésiennes
+
+### Résultats
+
+Les résultats sont disponibles dans un fichier powerpoint
 
 
