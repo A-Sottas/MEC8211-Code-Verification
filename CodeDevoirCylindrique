@@ -141,7 +141,7 @@ for N in Vn:
     res.plot(Vr,sol_numérique2,".--",label="Solution numérique : Schéma ordre 2")
     
 #Affichage Solution Analytique
-res.plot(Vr,sol_analytique,"x-",label="Solution analytique")
+res.plot(Vr,sol_analytique,"-",label="Solution analytique")
 
 err.loglog([10,100],[0.001,0.00001],'g*-') #Référence ordre 2
 
