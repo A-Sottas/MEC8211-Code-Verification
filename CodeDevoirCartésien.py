@@ -13,7 +13,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([10,100]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
 
 dt = 365*24*3600 #Base de temps : 1 an
 Vt = np.arange(0,5e9,dt) #Vecteur des temps t
