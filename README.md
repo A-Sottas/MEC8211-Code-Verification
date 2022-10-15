@@ -18,6 +18,6 @@ Deux fichiers sont disponibles :
 
 ### Résultats
 
-Les résultats sont disponibles dans un fichier powerpoint
+Les résultats sont disponibles dans un fichier Powerpoint.
 
 
