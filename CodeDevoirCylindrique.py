@@ -102,7 +102,7 @@ def EL1(analytique,numérique):
 def EL2(analytique,numérique):
     '''Calcul l'erreur L2'''
     errL2=(numérique-analytique)/analytique*(abs(numérique-analytique))**2
-    L2=((1/len(analytique))*sum(errL2))**0.5
+    L2=(abs((1/len(analytique))*sum(errL2)))**0.5
     return L2
     
 def EL3(analytique,numérique):
