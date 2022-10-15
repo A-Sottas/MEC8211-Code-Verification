@@ -19,7 +19,7 @@ dt = 365*24*3600 #Base de temps : 1 an
 Vt = np.arange(0,5e9,dt) #Vecteur des temps t
     
 def Matrice(V,Ntot):
-    ''' Création de la matricec sans schéma de Gear'''
+    ''' Création de la matrice sans schéma de Gear'''
     dr = R/(Ntot-1)
     alpha = dt*D_eff/(dr**2)
     A = [-alpha]*(Ntot-1)
@@ -56,7 +56,7 @@ def VecC(Y,Ntot):
 def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
     """ Résolution du système linéaire à chaque t selon la méthode Euler implicite"""
     solu=[] 
-    Y=Y0 #Iniatialisation de la solution
+    Y=Y0 #Initialisation de la solution
     solu.append(Y0.tolist())
     M=Matrice(Vr,Ntot)
     for t in Vt: #Résolution à chaque t du système AX=B
