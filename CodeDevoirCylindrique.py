@@ -132,19 +132,7 @@ def Maillage(Ntot):
 ## Affichage des résultats
 res1,err1=plt.subplot(2,2,1),plt.subplot(2,2,2)
 res2,err2=plt.subplot(2,2,3),plt.subplot(2,2,4)
-plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3)
-
-ErreurL1=[]
-ErreurL2=[]
-ErreurL3=[]
-ErreurL11=[]
-ErreurL22=[]
-ErreurL33=[]
-
-## Affichage des résultats
-res1,err1=plt.subplot(2,2,1),plt.subplot(2,2,2)
-res2,err2=plt.subplot(2,2,3),plt.subplot(2,2,4)
-plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3)
+plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3, hspace=0.25)
 
 ErreurL1=[]
 ErreurL2=[]
@@ -183,12 +171,24 @@ err2.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
 err1.legend()
 err1.grid()
+err1.set_title("Tracé de l'erreur L1 en fonction du maillage")
+err1.set_xlabel('dr')
+err1.set_ylabel('$Erreur L1$')
 res1.legend()
 res1.grid()
+res1.set_title("Tracé de la concentration en fonction de la distance (méthode dérivée première)")
+res1.set_xlabel('$r$')
+res1.set_ylabel('$Concentration$')
 err2.legend()
 err2.grid()
+err2.set_title("Tracé de l'erreur L2 en fonction du maillage")
+err2.set_xlabel('dr')
+err2.set_ylabel('$Erreur L2$')
 res2.legend()
 res2.grid()
+res2.set_title("Tracé de la concentration en fonction de la distance (méthode Gear)")
+res2.set_xlabel('$r$')
+res2.set_ylabel('$Concentration$')
 
 err1.invert_xaxis()
 err2.invert_xaxis()
