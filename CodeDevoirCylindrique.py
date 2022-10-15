@@ -178,8 +178,8 @@ err2.loglog(R/(Vn-1),ErreurL33,'k2-',label="Linf Gear")
 res1.plot(Vr,sol_analytique,"-",label="Solution analytique")
 res2.plot(Vr,sol_analytique,"-",label="Solution analytique")
 
-err1.loglog([0.1,0.01],[0.01,0.0001],'g*-') #Référence ordre 2
-err2.loglog([0.1,0.01],[0.01,0.0001],'g*-') #Référence ordre 2
+err1.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
+err2.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
 err1.legend()
 err1.grid()
