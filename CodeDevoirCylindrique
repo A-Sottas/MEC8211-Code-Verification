@@ -38,7 +38,6 @@ def B2(alpha,V,dr):
     T=np.ones_like(V)
     for i in range(len(V)-1):
         T[i]=V[i+1]
-    #T[1:-1]=V[:-1]
     return 1+alpha*((2/dr**2)+1/(2*T*dr))
 
 def D2(alpha,V,dr):
@@ -175,7 +174,7 @@ err2.loglog(R/(Vn-1),ErreurL22,'r2-',label="L2 Gear")
 err1.loglog(R/(Vn-1),ErreurL3,'k1-',label="Linf")
 err2.loglog(R/(Vn-1),ErreurL33,'k2-',label="Linf Gear")
     
-#Affichage Solution Analytique
+#Affichage de la solution Analytique
 res1.plot(Vr,sol_analytique,"-",label="Solution analytique")
 res2.plot(Vr,sol_analytique,"-",label="Solution analytique")
 
