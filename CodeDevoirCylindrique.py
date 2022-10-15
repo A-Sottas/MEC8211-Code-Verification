@@ -97,19 +97,19 @@ def EL1(analytique,numérique):
     '''Calcul l'erreur L1'''
     errL1=(numérique-analytique)/analytique*abs(numérique-analytique)
     L1=(1/len(analytique))*sum(errL1)
-    return errL1, L1
+    return L1
 
 def EL2(analytique,numérique):
     '''Calcul l'erreur L2'''
     errL2=(numérique-analytique)/analytique*(abs(numérique-analytique))**2
     L2=((1/len(analytique))*sum(errL2))*0.5
-    return errL2, L2
+    return L2
     
 def EL3(analytique,numérique):
     '''Calcul erreur L3'''
     errL3=abs(numérique-analytique)
     L3=max(errL3)
-    return errL3, L3
+    return L3
 
 def Maillage(Ntot):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
@@ -121,12 +121,12 @@ def Maillage(Ntot):
     sol_analytique=C(Vr)
     sol_numérique=solution[-1]
     sol_numérique2=solution2[-1]
-    errL1,L1=EL1(sol_analytique,sol_numérique)
-    errL11,L11=EL1(sol_analytique,sol_numérique2)
-    errL2,L2=EL2(sol_analytique,sol_numérique)
-    errL22,L22=EL2(sol_analytique,sol_numérique2)
-    errL3,L3=EL3(sol_analytique,sol_numérique)
-    errL33,L33=EL3(sol_analytique,sol_numérique2)
+    L1=EL1(sol_analytique,sol_numérique)
+    L11=EL1(sol_analytique,sol_numérique2)
+    L2=EL2(sol_analytique,sol_numérique)
+    L22=EL2(sol_analytique,sol_numérique2)
+    L3=EL3(sol_analytique,sol_numérique)
+    L33=EL3(sol_analytique,sol_numérique2)
     return Ntot,abs(L1), abs(L11), abs(L2), abs(L22), abs(L3), abs(L33), Vr, sol_analytique, sol_numérique,sol_numérique2
 
 ## Affichage des résultats
