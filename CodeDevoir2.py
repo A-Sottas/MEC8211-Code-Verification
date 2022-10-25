@@ -13,7 +13,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,1e10,dt) #Vecteur des temps t
@@ -33,17 +33,21 @@ def D1(alpha,V,dr):
     T[1:]=V[1:]
     return -alpha*((1/dr**2)+1/(T*dr))
 
-def B2(alpha,V,dr):
-    '''Coefficients B de la matrice avec schémas à l'ordre 2'''
+def A2(alpha,V,dr):
+    '''Coefficients D de la matrice avec schémas à l'ordre 2'''
     T=np.ones_like(V)
     for i in range(len(V)-1):
         T[i]=V[i+1]
-    return 1+alpha*((2/dr**2)+1/(2*T*dr))
+    return -alpha*((1/dr**2)+1/(2*T*dr))
+
+def B2(alpha,dr):
+    '''Coefficients B de la matrice avec schémas à l'ordre 2'''
+    return 1+alpha*((2/dr**2))
 
 def D2(alpha,V,dr):
     '''Coefficients D de la matrice avec schémas à l'ordre 2'''
     T=np.ones_like(V)
-    T[1:]=V[1:]
+    T[2:]=V[1:-1]
     return -alpha*((1/dr**2)+1/(2*T*dr))
     
 def Matrice1(V,Ntot):
@@ -62,7 +66,7 @@ def MatriceGear(V,Ntot):
     dr = R/(Ntot-1)
     alpha = dt*D_eff
     A = -alpha/dr**2
-    M = A*np.eye(Ntot,k=-1) + B1(alpha,V,dr)*np.eye(Ntot) + D1(alpha,V,dr)*np.eye(Ntot,k=1)
+    M = A2(alpha,V,dr)*np.eye(Ntot,k=-1) + B2(alpha,dr)*np.eye(Ntot) + D2(alpha,V,dr)*np.eye(Ntot,k=1)
     M[0],M[-1]=0,0
     M[0,0],M[0,1],M[0,2]=-3,4,-1 #Schéma de Gear
     M[-1,-1] = 1
@@ -115,6 +119,8 @@ def Maillage(Ntot):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
     M,M2=Matrice1(Vr,Ntot),MatriceGear(Vr,Ntot)
+    print(M)
+    print(M2)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
     solution = Euler_implicite_solve(Vr,Vt,M,Y0,Matrice1,Ntot)
     solution2 = Euler_implicite_solve(Vr,Vt,M2,Y0,MatriceGear,Ntot)
