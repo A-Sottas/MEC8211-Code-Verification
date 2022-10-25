@@ -8,6 +8,7 @@ from scipy.integrate import odeint
 ##Définition des constantes
 
 S =  1e-8 #Terme source constant
+k = 4e-9
 D_eff = 1e-10 #Coefficient de diffusion constant
 Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
@@ -16,7 +17,7 @@ R = D/2 #Rayon du pilier
 Vn=np.array([5,50]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
-Vt = np.arange(0,1e10,dt) #Vecteur des temps t
+Vt = np.arange(0,2e10,dt) #Vecteur des temps t
 
 ##Construction des matrices
 
@@ -29,7 +30,7 @@ def A2(alpha,V,dr):
 
 def B2(alpha,dr):
     '''Coefficients B de la matrice avec schémas à l'ordre 2'''
-    return 1+alpha*((2/dr**2))
+    return 1+k*dt+alpha*((2/dr**2))
 
 def D2(alpha,V,dr):
     '''Coefficients D de la matrice avec schémas à l'ordre 2'''
@@ -62,8 +63,8 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 
 def VecC(Y,Ntot):
     '''Renvoie le vecteur colonne C'''
-    source=-dt*S*np.ones(Ntot) #Terme source
-    C=Y+source
+    #source=-dt*S*np.ones(Ntot) #Terme source
+    C=Y
     C[0] = 0
     C[-1] = Ce
     return C
@@ -103,6 +104,7 @@ def Maillage(Ntot):
     return Ntot,abs(L2), Vr, sol_analytique, sol_numérique
 
 ## Affichage des résultats
+plt.figure("Résultats",figsize=(12,5))
 res1,err1=plt.subplot(1,2,1),plt.subplot(1,2,2)
 plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3, hspace=0.25)
 
@@ -131,7 +133,7 @@ err1.set_xlabel('dr')
 err1.set_ylabel('$Erreur L1$')
 res1.legend()
 res1.grid()
-res1.set_title("Tracé de la concentration en fonction de la distance (méthode dérivée première)")
+res1.set_title("Tracé de la concentration en fonction de la distance")
 res1.set_xlabel('$r$')
 res1.set_ylabel('$Concentration$')
 
