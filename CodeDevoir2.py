@@ -38,7 +38,7 @@ def A2(alpha,V,dr):
     T=np.ones_like(V)
     for i in range(len(V)-1):
         T[i]=V[i+1]
-    return -alpha*((1/dr**2)+1/(2*T*dr))
+    return -alpha*((1/dr**2)-1/(2*T*dr))
 
 def B2(alpha,dr):
     '''Coefficients B de la matrice avec schémas à l'ordre 2'''
