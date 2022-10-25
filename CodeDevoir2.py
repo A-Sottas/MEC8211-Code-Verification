@@ -56,12 +56,12 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
     solu.append(Y0.tolist())
     M=Matrice(Vr,Ntot)
     for t in Vt: #Résolution à chaque t du système AX=B
-        C=VecC(Y,Ntot) #Vecteur B
+        C=VecC(Y,t,Ntot) #Vecteur B
         Y=np.linalg.solve(M,C) #Résolution du système
         solu.append(Y.tolist())
     return np.array(solu)
 
-def VecC(Y,Ntot):
+def VecC(Y,t,Ntot):
     '''Renvoie le vecteur colonne C'''
     #source=-dt*S*np.ones(Ntot) #Terme source
     C=Y
