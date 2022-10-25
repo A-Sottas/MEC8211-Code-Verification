@@ -8,6 +8,7 @@ from scipy.integrate import odeint
 ##Définition des constantes
 
 S =  1e-8 #Terme source constant
+k = 4e-9
 D_eff = 1e-10 #Coefficient de diffusion constant
 Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
@@ -25,13 +26,13 @@ def B1(alpha,V,dr):
     T=np.ones_like(V)
     for i in range(len(V)-1):
         T[i]=V[i+1]
-    return 1+alpha*((2/dr**2)+1/(T*dr))
+    return 1+dt*k+alpha*((2/dr**2)+1/(2*T*dr))
 
 def D1(alpha,V,dr):
     '''Coefficients D de la matrice avec schémas à l'ordre 1'''
     T=np.ones_like(V)
     T[1:]=V[1:]
-    return -alpha*((1/dr**2)+1/(T*dr))
+    return -alpha*((1/dr**2)+1/(2*T*dr))
 
 def B2(alpha,V,dr):
     '''Coefficients B de la matrice avec schémas à l'ordre 2'''
@@ -46,7 +47,7 @@ def D2(alpha,V,dr):
     T[1:]=V[1:]
     return -alpha*((1/dr**2)+1/(2*T*dr))
     
-def Matrice(V,Ntot):
+def MatriceSansSource(V,Ntot):
     ''' Création de la matrice sans schéma de Gear'''
     dr = R/(Ntot-1) #Définition du dr
     alpha = dt*D_eff
@@ -114,9 +115,9 @@ def EL3(analytique,numérique):
 def Maillage(Ntot):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
-    M,M2=Matrice(Vr,Ntot),MatriceGear(Vr,Ntot)
+    M,M2=MatriceSansSource(Vr,Ntot),MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
-    solution = Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot)
+    solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceSansSource,Ntot)
     solution2 = Euler_implicite_solve(Vr,Vt,M2,Y0,MatriceGear,Ntot)
     sol_analytique=C(Vr)
     sol_numérique=solution[-1]
