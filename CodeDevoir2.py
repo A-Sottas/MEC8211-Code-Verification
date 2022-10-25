@@ -110,7 +110,7 @@ def SolutionAnalytique(Ntot,Vt):
 
 def C(Vr,t):
     '''Donne la solution analytique MMS'''
-    return np.exp(t/10)*np.sin(np.pi*Vr/R)*(R-Vr)*(Vr**2)+Ce
+    return np.exp(t/1e9)*np.sin(np.pi*Vr/R)*(R-Vr)*(Vr**2)+Ce
 
 ## Affichage des résultats
 plt.figure("Résultats",figsize=(12,5))
