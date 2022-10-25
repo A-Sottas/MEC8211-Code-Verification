@@ -17,7 +17,7 @@ R = D/2 #Rayon du pilier
 Vn=np.array([5]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
-Vt = np.arange(0,2e10,dt) #Vecteur des temps t
+Vt = np.arange(0,dt*5,dt) #Vecteur des temps t
 
 ##Construction des matrices
 
@@ -110,7 +110,7 @@ def SolutionAnalytique(Ntot,Vt):
 
 def C(Vr,t):
     '''Donne la solution analytique MMS'''
-    return np.exp(t/10)*np.sin(np.pi*Vr/R)*(R-r)*(r**2)+Ce
+    return np.exp(t/10)*np.sin(np.pi*Vr/R)*(R-Vr)*(Vr**2)+Ce
 
 ## Affichage des résultats
 plt.figure("Résultats",figsize=(12,5))
