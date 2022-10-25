@@ -119,8 +119,6 @@ def Maillage(Ntot):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
     M,M2=Matrice1(Vr,Ntot),MatriceGear(Vr,Ntot)
-    print(M)
-    print(M2)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
     solution = Euler_implicite_solve(Vr,Vt,M,Y0,Matrice1,Ntot)
     solution2 = Euler_implicite_solve(Vr,Vt,M2,Y0,MatriceGear,Ntot)
