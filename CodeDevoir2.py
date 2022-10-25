@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50]) #Choix du nombre de points dans le maillage
+Vn=np.array([5]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,2e10,dt) #Vecteur des temps t
@@ -69,9 +69,7 @@ def VecC(Y,t,Ntot):
     C[-1] = Ce
     return C
 
-def C(Vr):
-    '''Donne la solution analytique'''
-    return 0.25*(S/D_eff)*R**2*(Vr**2/R**2-1)+Ce
+
 
 
 def EL1(analytique,numérique):
@@ -98,10 +96,21 @@ def Maillage(Ntot):
     M=MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
     solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceGear,Ntot)
-    sol_analytique=C(Vr)
     sol_numérique=solution[-1]
-    L2=EL2(sol_analytique,sol_numérique)
-    return Ntot,abs(L2), Vr, sol_analytique, sol_numérique
+    #L2=EL2(sol_analytique,sol_numérique)
+    L2=0
+    return Ntot,abs(L2), Vr, sol_numérique
+
+def SolutionAnalytique(Ntot,Vt):
+    Vr = np.linspace(0,R,Ntot)
+    sol_analytique=[]
+    for t in Vt :
+        sol_analytique.append(C(Vr,t))
+    return np.array(sol_analytique)
+
+def C(Vr,t):
+    '''Donne la solution analytique MMS'''
+    return np.exp(t/10)*np.sin(np.pi*Vr/R)*(R-r)*(r**2)+Ce
 
 ## Affichage des résultats
 plt.figure("Résultats",figsize=(12,5))
@@ -112,7 +121,7 @@ ErreurL2=[]
 
 #Affichage des résultats
 for N in Vn:
-    Ntot, L2,Vr,sol_analytique, sol_numérique = Maillage(N)
+    Ntot, L2,Vr, sol_numérique = Maillage(N)
     ErreurL2.append(L2)
     #Affiche des solutions
     res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
@@ -122,7 +131,11 @@ for N in Vn:
 err1.loglog(R/(Vn-1),ErreurL2,'r1-',label="L2")
     
 #Affichage de la solution Analytique
-res1.plot(Vr,sol_analytique,"-",label="Solution analytique")
+for N in Vn:
+    Vra = np.linspace(0,R,N)
+    analytique = SolutionAnalytique(N,Vt)
+    for k in range(len(analytique)):
+        res1.plot(Vra,analytique[k],label="Analytique : Temps = {}".format(Vt[k]))
 
 err1.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
