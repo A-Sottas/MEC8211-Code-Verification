@@ -13,7 +13,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,1e10,dt) #Vecteur des temps t
@@ -44,12 +44,11 @@ def MatriceGear(V,Ntot):
     M[-1,-1] = 1
     return M
 
-def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
+def Euler_implicite_solve(Vr,Vt,M,Y0,Ntot):
     """ Résolution du système linéaire à chaque t selon la méthode Euler implicite"""
     solu=[] 
     Y=Y0 #Iniatialisation de la solution
     solu.append(Y0.tolist())
-    M=MatriceGear(Vr,Ntot)
     for t in Vt: #Résolution à chaque t du système AX=B
         C=VecC(Y,Ntot) #Vecteur B
         Y=np.linalg.solve(M,C) #Résolution du système
@@ -90,9 +89,9 @@ def EL3(analytique,numérique):
 def Maillage(Ntot):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
-    M2=MatriceGear(Vr,Ntot)
+    M=MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
-    solution = Euler_implicite_solve(Vr,Vt,M2,Y0,MatriceGear,Ntot)
+    solution = Euler_implicite_solve(Vr,Vt,M,Y0,Ntot)
     sol_analytique=C(Vr)
     sol_numérique=solution[-1]
     L1=EL1(sol_analytique,sol_numérique)
