@@ -14,10 +14,10 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([50]) #Choix du nombre de points dans le maillage
+Vn=np.array([250]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
-Vt = np.arange(0,dt*5,dt) #Vecteur des temps t
+Vt = np.arange(0,1e9,dt) #Vecteur des temps t
 
 ##Construction des matrices
 
@@ -64,7 +64,8 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
     source = (D_eff*t*((-4*Vr*np.sin(Vr)+(Vr**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr))+k*(Ce*R**2*dt+t*(R**2-Vr**2)*np.cos(Vr))+(R**2-Vr**2)*np.cos(Vr))/(R**2*dt)
-    C=Y+source
+    C=Y+dt*source
+    C[0]=0
     C[-1]=Ce
     return C
 
@@ -93,9 +94,7 @@ def Maillage(Ntot):
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
     solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceGear,Ntot)
     sol_numérique=solution[-1]
-    #L2=EL2(sol_analytique,sol_numérique)
-    L2=0
-    return Ntot,abs(L2), Vr, sol_numérique
+    return Ntot, Vr, sol_numérique
 
 def SolutionAnalytique(Ntot,Vt):
     Vr = np.linspace(0,R,Ntot)
@@ -117,23 +116,21 @@ ErreurL2=[]
 
 #Affichage des résultats
 for N in Vn:
-    Ntot, L2,Vr, sol_numérique = Maillage(N)
+    Ntot,Vr, sol_numérique = Maillage(N)
+    analytique = SolutionAnalytique(N,Vt)
+    L2=EL2(analytique,sol_numérique)
     ErreurL2.append(L2)
     #Affiche des solutions
     res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
+    res1.plot(Vr,analytique[-1],label="solution analytique")
 
 #Affichage des erreurs en échelle Log-Log
 
 err1.loglog(R/(Vn-1),ErreurL2,'r1-',label="L2")
     
 #Affichage de la solution Analytique
-for N in Vn:
-    Vra = np.linspace(0,R,N)
-    analytique = SolutionAnalytique(N,Vt)
-    #for k in range(len(analytique)):
-        #res1.plot(Vra,analytique[k],label="Analytique : Temps = {}".format(Vt[k]))
 
-    res1.plot(Vr,analytique[-1],label="solution analytique")
+    
 
 err1.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
