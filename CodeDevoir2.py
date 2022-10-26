@@ -56,15 +56,15 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
     solu.append(Y0.tolist())
     M=Matrice(Vr,Ntot)
     for t in Vt: #Résolution à chaque t du système AX=B
-        C=VecC(Y,t,Ntot) #Vecteur B
+        C=VecC(Y,t,Vr,Ntot) #Vecteur B
         Y=np.linalg.solve(M,C) #Résolution du système
         solu.append(Y.tolist())
     return np.array(solu)
 
-def VecC(Y,t,Ntot):
+def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
-    #source=-dt*S*np.ones(Ntot) #Terme source
-    C=Y
+    source= 5.0e-9*Vr**2*(0.5-Vr)*np.exp(1e-9*Vt)*np.sin(2*np.pi*Vr)-1e-10*(4*np.pi**2*Vr**2*(Vr-0.5)*np.sin(2*np.pi*Vr)-4*np.pi.Vr**2*np.cos(2*np.pi*Vr)-8*np.pi*Vr*(Vr-0.5)*np.cos(2*np.pi*Vr)-4*Vr*np.sin(2*np.pi*Vr)-(2*Vr-1)*np.sin(2*np.pi*Vr))*np.exp(1e-9*Vt)+4e-8' #Terme source
+    C=Y+source
     C[0] = 0
     C[-1] = Ce
     return C
@@ -95,7 +95,7 @@ def Maillage(Ntot):
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
     M=MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
-    solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceGear,Ntot)
+    solution = Euler_implicite_solve(Vr,Vt,Vr,M,Y0,MatriceGear,Ntot)
     sol_numérique=solution[-1]
     #L2=EL2(sol_analytique,sol_numérique)
     L2=0
