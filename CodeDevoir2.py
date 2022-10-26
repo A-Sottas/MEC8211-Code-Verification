@@ -63,7 +63,7 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 
 def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
-    source= 5.0e-9*Vr**2*(0.5-Vr)*np.exp(1e-9*Vt)*np.sin(2*np.pi*Vr)-1e-10*(4*np.pi**2*Vr**2*(Vr-0.5)*np.sin(2*np.pi*Vr)-4*np.pi.Vr**2*np.cos(2*np.pi*Vr)-8*np.pi*Vr*(Vr-0.5)*np.cos(2*np.pi*Vr)-4*Vr*np.sin(2*np.pi*Vr)-(2*Vr-1)*np.sin(2*np.pi*Vr))*np.exp(1e-9*Vt)+4e-8' #Terme source
+    source= 5.0e-9*Vr**2*(0.5-Vr)*np.exp(1e-9*Vt)*np.sin(2*np.pi*Vr)-1e-10*(4*np.pi**2*Vr**2*(Vr-0.5)*np.sin(2*np.pi*Vr)-4*np.pi*Vr**2*np.cos(2*np.pi*Vr)-8*np.pi*Vr*(Vr-0.5)*np.cos(2*np.pi*Vr)-4*Vr*np.sin(2*np.pi*Vr)-(2*Vr-1)*np.sin(2*np.pi*Vr))*np.exp(1e-9*Vt)+4e-8 #Terme source
     C=Y+source
     C[0] = 0
     C[-1] = Ce
@@ -95,7 +95,7 @@ def Maillage(Ntot):
     Vr = np.linspace(0,R,Ntot) #Définition du Maillage
     M=MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
-    solution = Euler_implicite_solve(Vr,Vt,Vr,M,Y0,MatriceGear,Ntot)
+    solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceGear,Ntot)
     sol_numérique=solution[-1]
     #L2=EL2(sol_analytique,sol_numérique)
     L2=0
@@ -110,7 +110,7 @@ def SolutionAnalytique(Ntot,Vt):
 
 def C(Vr,t):
     '''Donne la solution analytique MMS'''
-    return np.exp(t/1e9)*np.sin(np.pi*Vr/R)*(R-Vr)*(Vr**2)+Ce
+    return Ce + (t*(1-(Vr/R)**2)*np.cos(Vr))/dt
 
 ## Affichage des résultats
 plt.figure("Résultats",figsize=(12,5))
@@ -134,8 +134,10 @@ err1.loglog(R/(Vn-1),ErreurL2,'r1-',label="L2")
 for N in Vn:
     Vra = np.linspace(0,R,N)
     analytique = SolutionAnalytique(N,Vt)
-    for k in range(len(analytique)):
-        res1.plot(Vra,analytique[k],label="Analytique : Temps = {}".format(Vt[k]))
+    #for k in range(len(analytique)):
+        #res1.plot(Vra,analytique[k],label="Analytique : Temps = {}".format(Vt[k]))
+
+    res1.plot(Vr,analytique[-1],label="solution analytique")
 
 err1.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
