@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5]) #Choix du nombre de points dans le maillage
+Vn=np.array([50]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,dt*5,dt) #Vecteur des temps t
@@ -63,14 +63,10 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 
 def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
-    source= 5.0e-9*Vr**2*(0.5-Vr)*np.exp(1e-9*Vt)*np.sin(2*np.pi*Vr)-1e-10*(4*np.pi**2*Vr**2*(Vr-0.5)*np.sin(2*np.pi*Vr)-4*np.pi*Vr**2*np.cos(2*np.pi*Vr)-8*np.pi*Vr*(Vr-0.5)*np.cos(2*np.pi*Vr)-4*Vr*np.sin(2*np.pi*Vr)-(2*Vr-1)*np.sin(2*np.pi*Vr))*np.exp(1e-9*Vt)+4e-8 #Terme source
+    source = (D_eff*t*((-4*Vr*np.sin(Vr)+(Vr**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr))+k*(Ce*R**2*dt+t*(R**2-Vr**2)*np.cos(Vr))+(R**2-Vr**2)*np.cos(Vr))/(R**2*dt)
     C=Y+source
-    C[0] = 0
-    C[-1] = Ce
+    C[-1]=Ce
     return C
-
-
-
 
 def EL1(analytique,numérique):
     '''Calcul l'erreur L1'''
