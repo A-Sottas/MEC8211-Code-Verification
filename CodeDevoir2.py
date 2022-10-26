@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([250]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,10,50,100,500]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,1e9,dt) #Vecteur des temps t
@@ -63,7 +63,7 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 
 def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
-    source = (D_eff*t*((-4*Vr*np.sin(Vr)+(Vr**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr))+k*(Ce*R**2*dt+t*(R**2-Vr**2)*np.cos(Vr))+(R**2-Vr**2)*np.cos(Vr))/(R**2*dt)
+    source = (D_eff*t*(-4*Vr*np.sin(Vr)+(R**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr)+k*(Ce*(R**2)*dt+t*(R**2-Vr**2)*np.cos(Vr))+((R**2-Vr**2)*np.cos(Vr)))/((R**2)*dt)
     C=Y+dt*source
     C[0]=0
     C[-1]=Ce
@@ -96,16 +96,10 @@ def Maillage(Ntot):
     sol_numérique=solution[-1]
     return Ntot, Vr, sol_numérique
 
-def SolutionAnalytique(Ntot,Vt):
-    Vr = np.linspace(0,R,Ntot)
-    sol_analytique=[]
-    for t in Vt :
-        sol_analytique.append(C(Vr,t))
-    return np.array(sol_analytique)
-
 def C(Vr,t):
     '''Donne la solution analytique MMS'''
-    return Ce + (t*(1-(Vr/R)**2)*np.cos(Vr))/dt
+    return Ce + (t*(1-(Vr**2/R**2)*np.cos(Vr)))/dt
+
 
 ## Affichage des résultats
 plt.figure("Résultats",figsize=(12,5))
@@ -117,12 +111,14 @@ ErreurL2=[]
 #Affichage des résultats
 for N in Vn:
     Ntot,Vr, sol_numérique = Maillage(N)
-    analytique = SolutionAnalytique(N,Vt)
-    L2=EL2(analytique,sol_numérique)
+    sol_analytique = C(Vr,Vt[-1])
+    L2=EL2(sol_analytique,sol_numérique)
     ErreurL2.append(L2)
     #Affiche des solutions
     res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
-    res1.plot(Vr,analytique[-1],label="solution analytique")
+    res1.plot(Vr,sol_analytique,label="solution analytique : Ntot = {}".format(Ntot))
+
+print(ErreurL2)
 
 #Affichage des erreurs en échelle Log-Log
 
