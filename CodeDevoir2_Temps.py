@@ -14,10 +14,11 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50,500,1000]) #Choix du nombre de points dans le maillage
+Ntot = 50 #Choix du nombre de points dans le maillage
+Vr = np.linspace(0,R,Ntot)
 
-dt = 365*3600*24 #Base de temps : 1 an
-Vt = np.arange(0,1e9,dt) #Vecteur des temps t
+Vdt = np.array([1e4,1e5,1e6,1e7,1e8]) #Base de temps en seconde
+ #Vecteur des temps t
 
 ##Construction des matrices
 
@@ -89,14 +90,13 @@ def EL3(analytique,numérique):
     L3=max(errL3)
     return L3
 
-def Maillage(Ntot):
+def Maillage(Vt):
     '''Calcul les solutions numériques en fonction du nombre de point Ntot'''
-    Vr = np.linspace(0,R,Ntot) #Définition du Maillage
     M=MatriceGear(Vr,Ntot)
     Y0 = np.zeros(Ntot) #Condition initiale : C=0 dans tout le pilier
     solution = Euler_implicite_solve(Vr,Vt,M,Y0,MatriceGear,Ntot)
     sol_numérique=solution[-1]
-    return Ntot, Vr, sol_numérique
+    return Vr, sol_numérique
 
 def C(Vr,t):
     '''Donne la solution analytique MMS'''
@@ -111,30 +111,31 @@ plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3, hs
 ErreurL2=[]
 
 #Affichage des résultats
-for N in Vn:
-    Ntot,Vr, sol_numérique = Maillage(N)
+for dt in Vdt:
+    Vt = np.arange(0,1e9,dt)
+    Vr, sol_numérique = Maillage(Vt)
     sol_analytique = C(Vr,Vt[-1])
     L2=EL2(sol_analytique,sol_numérique)
     ErreurL2.append(L2)
     #Affiche des solutions
-    res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : Ntot = {}".format(Ntot))
-    res1.plot(Vr,sol_analytique,label="solution analytique : Ntot = {}".format(Ntot))
+    res1.plot(Vr,sol_numérique,".-",label="Ordre 1 : dt = {}".format(dt))
+    res1.plot(Vr,sol_analytique,label="solution analytique : dt = {}".format(dt))
 
 print(ErreurL2)
 
 #Affichage des erreurs en échelle Log-Log
 
-err1.loglog(R/(Vn-1),ErreurL2,'r1-',label="L2")
+err1.loglog(Vdt,ErreurL2,'r1-',label="L2")
     
 #Affichage de la solution Analytique
 
     
 
-err1.loglog([0.1,0.01],[0.01,0.0001],'g*-',label="Référence ordre 2")
+err1.loglog([1e7,1e6],[0.01,0.0001],'g*-',label="Référence ordre 2")
 
 err1.legend()
 err1.grid()
-err1.set_title("Tracé de l'erreur L1 en fonction du maillage")
+err1.set_title("Tracé de l'erreur L1 en fonction du pas de temps")
 err1.set_xlabel('dr')
 err1.set_ylabel('$Erreur L1$')
 res1.legend()
