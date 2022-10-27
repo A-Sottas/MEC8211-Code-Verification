@@ -14,9 +14,9 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,10,15,20]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
 
-dt = 365*3600*24/2 #Base de temps : 1 an
+dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,1e9,dt) #Vecteur des temps t
 
 ##Construction des matrices
@@ -30,7 +30,7 @@ def A2(alpha,V,dr):
 
 def B2(alpha,dr):
     '''Coefficients B de la matrice avec schémas à l'ordre 2'''
-    return 1+k*dt+alpha*((2/dr**2))
+    return 1+(k*dt)+alpha*((2/dr**2))
 
 def D2(alpha,V,dr):
     '''Coefficients D de la matrice avec schémas à l'ordre 2'''
@@ -66,7 +66,7 @@ def VecC(Y,t,Vr,Ntot):
     #source = (D_eff*t*(-4*Vr*np.sin(Vr)+(R**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr)+k*(Ce*(R**2)*dt+t*(R**2-Vr**2)*np.cos(Vr))+((R**2-Vr**2)*np.cos(Vr)))/((R**2)*dt)
     source = (D_eff*t*(R**2*Vr[1:-1]*np.cos(Vr[1:-1])+R**2*np.sin(Vr[1:-1])-(Vr[1:-1]**3)*np.cos(Vr[1:-1])-5*(Vr[1:-1]**2)*np.sin(Vr[1:-1])+4*Vr[1:-1]*np.cos(Vr[1:-1]))+Vr[1:-1]*(k*(Ce*R**2*dt+t*(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1]))+(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1])))/((R**2)*dt*Vr[1:-1])
     C=np.zeros_like(Y)
-    C[1:-1]=Y[1:-1]+dt*source
+    C[1:-1]=Y[1:-1]+(dt*source)
     C[0]=0
     C[-1]=Ce
     return C
