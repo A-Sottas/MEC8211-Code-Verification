@@ -16,7 +16,8 @@ R = D/2 #Rayon du pilier
 
 Vn=np.array([5,50,500,1000]) #Choix du nombre de points dans le maillage
 
-dt = 365*3600*24 #Base de temps : 1 an
+#dt = 365*3600*24 #Base de temps : 1 an
+dt = 1e6
 Vt = np.arange(0,1e9,dt) #Vecteur des temps t
 
 ##Construction des matrices
@@ -104,7 +105,7 @@ def C(Vr,t):
 
 
 ## Affichage des résultats
-plt.figure("Résultats",figsize=(12,5))
+plt.figure("Résultats Espace",figsize=(12,5))
 res1,err1=plt.subplot(1,2,1),plt.subplot(1,2,2)
 plt.subplots_adjust(left=0.05, right=0.99, bottom=0.06, top=0.94, wspace=0.3, hspace=0.25)
 
