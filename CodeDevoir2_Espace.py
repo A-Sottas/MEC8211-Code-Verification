@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50,500]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50,500,1000]) #Choix du nombre de points dans le maillage
 
 dt = 365*3600*24 #Base de temps : 1 an
 Vt = np.arange(0,1e9,dt) #Vecteur des temps t
@@ -64,7 +64,7 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
 def VecC(Y,t,Vr,Ntot):
     '''Renvoie le vecteur colonne C'''
     #source = (D_eff*t*(-4*Vr*np.sin(Vr)+(R**2-Vr**2)*np.cos(Vr))+2*np.cos(Vr)+k*(Ce*(R**2)*dt+t*(R**2-Vr**2)*np.cos(Vr))+((R**2-Vr**2)*np.cos(Vr)))/((R**2)*dt)
-    source = (D_eff*t*(R**2*Vr[1:-1]*np.cos(Vr[1:-1])+R**2*np.sin(Vr[1:-1])-(Vr[1:-1]**3)*np.cos(Vr[1:-1])-5*(Vr[1:-1]**2)*np.sin(Vr[1:-1])+4*Vr[1:-1]*np.cos(Vr[1:-1]))+Vr[1:-1]*(k*(Ce*R**2*dt+t*(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1]))+(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1])))/((R**2)*dt*Vr[1:-1])
+    source = (D_eff*t*((R**2)*Vr[1:-1]*np.cos(Vr[1:-1])+(R**2)*np.sin(Vr[1:-1])-(Vr[1:-1]**3)*np.cos(Vr[1:-1])-5*(Vr[1:-1]**2)*np.sin(Vr[1:-1])+4*Vr[1:-1]*np.cos(Vr[1:-1]))+Vr[1:-1]*(k*(Ce*(R**2)*dt+t*(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1]))+(R**2-Vr[1:-1]**2)*np.cos(Vr[1:-1])))/((R**2)*dt*Vr[1:-1])
     C=np.zeros_like(Y)
     C[1:-1]=Y[1:-1]+(dt*source)
     C[0]=0
