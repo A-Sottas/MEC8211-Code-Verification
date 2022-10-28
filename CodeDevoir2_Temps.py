@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Ntot = 100 #Choix du nombre de points dans le maillage
+Ntot = 50 #Choix du nombre de points dans le maillage
 Vr = np.linspace(0,R,Ntot)
 
 Vdt = np.array([1e4,1e5,1e6,1e7,1e8]) #Base de temps en seconde
@@ -112,6 +112,7 @@ ErreurL2=[]
 
 #Affichage des résultats
 for dt in Vdt:
+    print(dt)
     Vt = np.arange(0,1e9,dt)
     Vr, sol_numérique = Maillage(Vt)
     sol_analytique = C(Vr,Vt[-1])
