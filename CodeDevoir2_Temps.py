@@ -17,7 +17,7 @@ R = D/2 #Rayon du pilier
 Ntot = 50 #Choix du nombre de points dans le maillage
 Vr = np.linspace(0,R,Ntot)
 
-Vdt = np.array([1e4,1e5,1e6,1e7,1e8]) #Base de temps en seconde
+Vdt = np.array([1e5,1e6,1e7,1e8,1e9]) #Base de temps en seconde
  #Vecteur des temps t
 
 ##Construction des matrices

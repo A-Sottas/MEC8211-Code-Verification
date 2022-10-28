@@ -14,7 +14,7 @@ Ce = 10 #Concentration extérieure
 D = 1 #Diamètre du pilier
 R = D/2 #Rayon du pilier
 
-Vn=np.array([5,50,500,1000]) #Choix du nombre de points dans le maillage
+Vn=np.array([5,50,100,500]) #Choix du nombre de points dans le maillage
 
 #dt = 365*3600*24 #Base de temps : 1 an
 dt = 1e6
@@ -57,6 +57,7 @@ def Euler_implicite_solve(Vr,Vt,M,Y0,Matrice,Ntot):
     solu.append(Y0.tolist())
     M=Matrice(Vr,Ntot)
     for t in Vt: #Résolution à chaque t du système AX=B
+        print(t)
         C=VecC(Y,t,Vr,Ntot) #Vecteur B
         Y=np.linalg.solve(M,C) #Résolution du système
         solu.append(Y.tolist())
