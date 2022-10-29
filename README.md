@@ -18,7 +18,7 @@ Deux fichiers sont disponibles pour le devoir 1:
 
 Quatre nouveaux fichiers sont disponibles pour le devoir 2:
 * [ComparaisonCOMSOL.py](ComparaisonCOMSOL.py) effectue une comparaison code à code entre la solution proposée par le code Python et celle obtenue par le logiciel COMSOL
-* [ComparaisonCOMSOL2.py](ComparaisonCOMSOL.py) effectue également une comparaison code à code entre la solution proposée par le code Python et celle obtenue par le logiciel COMSOL en effectuant un changement de pas temporel à 1e6s
+* [ComparaisonCOMSOL2.py](ComparaisonCOMSOL2.py) effectue également une comparaison code à code entre la solution proposée par le code Python et celle obtenue par le logiciel COMSOL en effectuant un changement de pas temporel à 1e6s
 * [CodeDevoir2_Espace.py](CodeDevoir2_Espace.py) réalise une analyse de convergence spatiale pour un pas de temps fixe
 * [CodeDevoir2_Temps.py](CodeDevoir2_Temps.py) réalise une analyse de convergence temporelle pour un pas de maillage fixe
 
