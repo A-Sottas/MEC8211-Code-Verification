@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import lhsmdu
 
-nb_echan = 10 #Nombre d'échantillons
+nb_echan = 100 #Nombre d'échantillons
 np.random.seed(0)
 
 #Taille des fibres
